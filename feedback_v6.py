@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-stability-feedback v6.0.0 放样反馈处理
+stability-feedback v6.1.0 放样反馈处理
 ========================================
 架构重构（v6.0.0）：
   1. 自动扫描计划文件，发现所有条件区块（不再依赖硬编码 blocks）
@@ -190,6 +190,9 @@ def auto_scan_plan(plan_path: Path):
                     if "-" not in bv_str and "LM" not in bv_str:
                         continue
                     if re.match(r"^\d{4}-\d{2}-\d{2}$", bv_str):
+                        continue
+                    # 排除纯 "-" 等无效批号格式
+                    if bv_str in ("-", "") or not re.search(r"\d{6}", bv_str):
                         continue
                     batches.append(bv_str)
 
